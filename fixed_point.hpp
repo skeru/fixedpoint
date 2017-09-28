@@ -242,12 +242,11 @@ this_t& operator-=(const other_t& value)
 }
 
 
-// TODO integrate missing operators
 /// Multiplication with another fixed-point
 template <uint16_t INT_BITS2, uint16_t FRAC_BITS2>
 this_t operator*(const fixed_point_t<INT_BITS2, FRAC_BITS2>& value) const
 {
-	typedef fixed_point_t<INT_BITS + INT_BITS2, FRAC_BITS + FRAC_BITS2> result_t;
+	typedef fixed_point_t<INT_BITS + INT_BITS2 + 1, FRAC_BITS + FRAC_BITS2 - 1> result_t;
 	typedef typename result_t::raw_t result_raw_t;
 	result_t extended_res = result_t::createRaw(static_cast<result_raw_t>(getRaw()) * static_cast<result_raw_t>(value.getRaw()));
 	return extended_res.template convert<INT_BITS, FRAC_BITS>();
@@ -278,13 +277,15 @@ this_t& operator*=(const other_t& value)
 template <uint16_t INT_BITS2, uint16_t FRAC_BITS2>
 this_t operator/(const fixed_point_t<INT_BITS2, FRAC_BITS2>& divisor) const
 {
-	typedef fixed_point_t<INT_BITS + FRAC_BITS2, FRAC_BITS + INT_BITS2> result_t;
+	const uint16_t I_RES = INT_BITS + FRAC_BITS2;
+	const uint16_t F_RES = INT_BITS2 + FRAC_BITS;
+	typedef fixed_point_t<I_RES, F_RES> result_t;
 	typedef typename result_t::raw_t result_raw_t;
 	// Expand the dividend so we don't lose resolution
 	result_raw_t intermediate = static_cast<result_raw_t>(raw);
 	// Shift the dividend. FRAC_BITS2 cancels with the fractional bits in
 	// divisor, and INT_BITS2 adds the required resolution.
-	intermediate <<= result_t::fractional_length; //FRAC_BITS + INT_BITS2;
+	intermediate <<= (F_RES - 1); //FRAC_BITS + INT_BITS2 - signum;
 	intermediate /= divisor.getRaw();
 	result_t tmp = result_t::createRaw(intermediate);
 	return tmp.template convert<INT_BITS, FRAC_BITS>();
@@ -522,6 +523,33 @@ raw_t getValue() const { return static_cast<raw_t>(raw >> FRAC_BITS); }
 
 /// Get the closest integer value
 raw_t round() const { return static_cast<raw_t>(std::round(getValueF())); }
+
+//---------------------------------------------------------------------------
+// conversion
+//---------------------------------------------------------------------------
+
+/// convert to int16_t
+explicit operator int16_t() const { return static_cast<int16_t>(getValue()); }
+
+/// convert to int32_t
+explicit operator int32_t() const { return static_cast<int32_t>(getValue()); }
+
+/// convert to int64_t
+explicit operator int64_t() const { return static_cast<int64_t>(getValue()); }
+
+/// convert to float
+explicit operator float() const { return getValueF(); }
+
+/// convert to double
+explicit operator double() const { return getValueFD(); }
+
+/// convert to long double
+explicit operator long double() const { return getValueFLD(); }
+
+template<uint16_t INT_BITS2, uint16_t FRAC_BITS2>
+explicit operator fixed_point_t<INT_BITS2, FRAC_BITS2>() const {
+	return this->template convert<INT_BITS2,FRAC_BITS2>();
+}
 
 };
 

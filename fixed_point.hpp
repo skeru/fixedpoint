@@ -252,18 +252,24 @@ this_t operator*(const fixed_point_t<INT_BITS2, FRAC_BITS2>& value) const
 	return extended_res.template convert<INT_BITS, FRAC_BITS>();
 }
 
+template <typename other_t>
+this_t operator*(const other_t& value) const
+{
+	return *this * this_t(value);
+}
+
+this_t& operator*=(const this_t& value) {
+	const auto tmp = *this * value;
+	raw = tmp.template convert<INT_BITS, FRAC_BITS>().getRaw();
+	return *this;
+}
+
 template <uint16_t INT_BITS2, uint16_t FRAC_BITS2>
 this_t& operator*=(const fixed_point_t<INT_BITS2, FRAC_BITS2>& value)
 {
 	const auto tmp = *this * value;
 	raw = tmp.template convert<INT_BITS, FRAC_BITS>().getRaw();
 	return *this;
-}
-
-template <typename other_t>
-this_t operator*(const other_t& value) const
-{
-	return *this * this_t(value);
 }
 
 template <typename other_t>
@@ -297,8 +303,13 @@ this_t operator/(const other_t& value) const
 	return *this / this_t(value);
 }
 
+this_t& operator/=(const this_t& value) {
+	const auto tmp = *this / value;
+	raw = tmp.getRaw();
+}
+
 template <uint16_t INT_BITS2, uint16_t FRAC_BITS2>
-this_t operator/=(const fixed_point_t<INT_BITS2, FRAC_BITS2>& value) const
+this_t& operator/=(const fixed_point_t<INT_BITS2, FRAC_BITS2>& value)
 {
 	const auto tmp = *this / value;
 	raw = tmp.template convert<INT_BITS, FRAC_BITS>().getRaw();

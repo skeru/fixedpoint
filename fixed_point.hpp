@@ -79,17 +79,17 @@ public:
 
 	/// Create a fixed-point with equivalent integer value
 	/** For example in 4.12 fixed-point, the number "2" is 0010.000000000000  */
-	fixed_point_t(int8_t value)   : raw(static_cast<raw_t>(value) << FRAC_BITS) {}
-	fixed_point_t(uint8_t value)  : raw(static_cast<raw_t>(value) << FRAC_BITS) {}
-	fixed_point_t(int16_t value)  : raw(static_cast<raw_t>(value) << FRAC_BITS) {}
-	fixed_point_t(uint16_t value) : raw(static_cast<raw_t>(value) << FRAC_BITS) {}
-	fixed_point_t(int32_t value)  : raw(static_cast<raw_t>(value) << FRAC_BITS) {}
-	fixed_point_t(uint32_t value) : raw(static_cast<raw_t>(value) << FRAC_BITS) {}
-	fixed_point_t(int64_t value)  : raw(static_cast<raw_t>(value) << FRAC_BITS) {}
-	fixed_point_t(uint64_t value) : raw(static_cast<raw_t>(value) << FRAC_BITS) {}
-	fixed_point_t(long double value) : raw((raw_t)(value * one)) {}
-	fixed_point_t(double value)      : raw((raw_t)(value * one)) {}
-	fixed_point_t(float value)       : raw((raw_t)(value * one)) {}
+	fixed_point_t(const int8_t value)   : raw(static_cast<raw_t>(value) << FRAC_BITS) {}
+	fixed_point_t(const uint8_t value)  : raw(static_cast<raw_t>(value) << FRAC_BITS) {}
+	fixed_point_t(const int16_t value)  : raw(static_cast<raw_t>(value) << FRAC_BITS) {}
+	fixed_point_t(const uint16_t value) : raw(static_cast<raw_t>(value) << FRAC_BITS) {}
+	fixed_point_t(const int32_t value)  : raw(static_cast<raw_t>(value) << FRAC_BITS) {}
+	fixed_point_t(const uint32_t value) : raw(static_cast<raw_t>(value) << FRAC_BITS) {}
+	fixed_point_t(const int64_t value)  : raw(static_cast<raw_t>(value) << FRAC_BITS) {}
+	fixed_point_t(const uint64_t value) : raw(static_cast<raw_t>(value) << FRAC_BITS) {}
+	fixed_point_t(const long double value) : raw((raw_t)(value * one)) {}
+	fixed_point_t(const double value)      : raw((raw_t)(value * one)) {}
+	fixed_point_t(const float value)       : raw((raw_t)(value * one)) {}
 
 	explicit fixed_point_t() : raw(0) {}
 

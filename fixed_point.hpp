@@ -561,19 +561,8 @@ template<uint16_t INT_BITS2, uint16_t FRAC_BITS2>
 explicit operator fixed_point_t<INT_BITS2, FRAC_BITS2>() const {
 	return this->template convert<INT_BITS2,FRAC_BITS2>();
 }
-
 };
 
-//---------------------------------------------------------------------------
-// External operators
-//---------------------------------------------------------------------------
-
-// Make the fixed-point struct  ostream outputtable
-template <uint16_t INT_BITS, uint16_t FRAC_BITS>
-std::ostream& operator<< (std::ostream &stream,
-	const fixed_point_t<INT_BITS, FRAC_BITS> &fixedPoint)
-{
-	return fixedPoint.emit(stream);
-}
+#include "fixed_point_external_operators.hpp"
 
 #endif /* end of include guard: FIXED_POINT_HPP */

@@ -25,12 +25,12 @@
 #ifndef FIXED_POINT_HPP
 #define FIXED_POINT_HPP
 
-#include "fixed_point_utils.hpp"
-
 #include <cmath>
 #include <iomanip>
 #include <ostream>
 #include <stdint.h>
+
+#include "fixed_point_utils.hpp"
 
 /// A fixed-point integer type
 /** \tparam INT_BITS The number of bits before the radix point

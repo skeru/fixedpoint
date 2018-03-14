@@ -246,7 +246,7 @@ this_t& operator-=(const other_t& value)
 template <uint16_t INT_BITS2, uint16_t FRAC_BITS2>
 this_t operator*(const fixed_point_t<INT_BITS2, FRAC_BITS2>& value) const
 {
-	typedef fixed_point_t<INT_BITS + INT_BITS2 + 1, FRAC_BITS + FRAC_BITS2 - 1> result_t;
+	typedef fixed_point_t<INT_BITS + INT_BITS2, FRAC_BITS + FRAC_BITS2> result_t;
 	typedef typename result_t::raw_t result_raw_t;
 	result_t extended_res = result_t::createRaw(static_cast<result_raw_t>(getRaw()) * static_cast<result_raw_t>(value.getRaw()));
 	return extended_res.template convert<INT_BITS, FRAC_BITS>();

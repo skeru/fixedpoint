@@ -306,6 +306,7 @@ this_t operator/(const other_t& value) const
 this_t& operator/=(const this_t& value) {
 	const auto tmp = *this / value;
 	raw = tmp.getRaw();
+	return *this;
 }
 
 template <uint16_t INT_BITS2, uint16_t FRAC_BITS2>

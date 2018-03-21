@@ -538,7 +538,7 @@ long double getValueFLD() const { return static_cast<long double>(raw)/one; }
 raw_t getValue() const { return static_cast<raw_t>(raw >> FRAC_BITS); }
 
 /// Get the closest integer value
-raw_t round() const { return static_cast<raw_t>(std::round(getValueF())); }
+raw_t round() const { return static_cast<raw_t>(round(getValueF())); }
 
 //---------------------------------------------------------------------------
 // conversion

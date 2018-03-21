@@ -90,6 +90,10 @@ public:
 	fixed_point_t(const long double value) : raw((raw_t)(value * one)) {}
 	fixed_point_t(const double value)      : raw((raw_t)(value * one)) {}
 	fixed_point_t(const float value)       : raw((raw_t)(value * one)) {}
+	#if _FIXED_POINT_REDEFINE_INT_TYPES_
+	fixed_point_t(const int value)         : raw(static_cast<raw_t>(value) << FRAC_BITS) {}
+	fixed_point_t(const unsigned int value): raw(static_cast<raw_t>(value) << FRAC_BITS) {}
+	#endif
 
 	explicit fixed_point_t() : raw(0) {}
 
@@ -540,6 +544,14 @@ raw_t round() const { return static_cast<raw_t>(std::round(getValueF())); }
 // conversion
 //---------------------------------------------------------------------------
 
+#if _FIXED_POINT_REDEFINE_INT_TYPES_
+/// convert to int
+explicit operator int() const { return static_cast<int>(getValue()); }
+
+/// convert to unsigned int
+explicit operator unsigned int() const { return static_cast<unsigned int>(getValue()); }
+#endif
+
 /// convert to int16_t
 explicit operator int16_t() const { return static_cast<int16_t>(getValue()); }
 
@@ -548,6 +560,15 @@ explicit operator int32_t() const { return static_cast<int32_t>(getValue()); }
 
 /// convert to int64_t
 explicit operator int64_t() const { return static_cast<int64_t>(getValue()); }
+
+/// convert to uint16_t
+explicit operator uint16_t() const { return static_cast<uint16_t>(getValue()); }
+
+/// convert to uint32_t
+explicit operator uint32_t() const { return static_cast<uint32_t>(getValue()); }
+
+/// convert to uint64_t
+explicit operator uint64_t() const { return static_cast<uint64_t>(getValue()); }
 
 /// convert to float
 explicit operator float() const { return getValueF(); }

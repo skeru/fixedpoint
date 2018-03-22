@@ -49,20 +49,11 @@
 #endif
 #endif
 
-#ifdef __llvm__
+#ifdef _MIOSIX
+#  define _FIXED_POINT_REDEFINE_INT_TYPES_ true
+#else
 #  define _FIXED_POINT_REDEFINE_INT_TYPES_ false
-#else
-#ifdef __GNUC__
-#include <features.h>
-#  if __GNUC_PREREQ(4,8)
-#    define _FIXED_POINT_REDEFINE_INT_TYPES_ false
-#  else
-#    define _FIXED_POINT_REDEFINE_INT_TYPES_ true
-#  endif
-#else
-#    define _FIXED_POINT_REDEFINE_INT_TYPES_ false
-#endif
-#endif
+#endif // miosix specific case
 
 //-----------------------------------------------------------------------------
 // LENGHT RELATED TEMPLATE HELPERS

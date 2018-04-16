@@ -69,7 +69,7 @@ private:
 	raw_t raw;
 
 public:
-	static const raw_t one  = ((raw_t)1) << (FRAC_BITS - 1);
+	static const raw_t one  = ((raw_t)1) << FRAC_BITS;
 	static const raw_t zero = ((raw_t)0) << FRAC_BITS;
 
 public:
@@ -287,15 +287,21 @@ this_t& operator*=(const other_t& value)
 template <uint16_t INT_BITS2, uint16_t FRAC_BITS2>
 this_t operator/(const fixed_point_t<INT_BITS2, FRAC_BITS2>& divisor) const
 {
+	// F_RES shold be INT_BITS2 + FRAC_BITS to fully preserve the precision.
+	// However, the current implementation truncates the precision to match
+	// the data type of the lhs. Hence, INT_BITS2 will be trimmed by the
+	// conversion in the last line.
 	const uint16_t I_RES = INT_BITS + FRAC_BITS2;
-	const uint16_t F_RES = INT_BITS2 + FRAC_BITS;
+	const uint16_t F_RES = FRAC_BITS;
+	// const uint16_t F_RES = INT_BITS2 + FRAC_BITS;
 	typedef fixed_point_t<I_RES, F_RES> result_t;
 	typedef typename result_t::raw_t result_raw_t;
 	// Expand the dividend so we don't lose resolution
 	result_raw_t intermediate = static_cast<result_raw_t>(raw);
-	// Shift the dividend. FRAC_BITS2 cancels with the fractional bits in
-	// divisor, and INT_BITS2 adds the required resolution.
-	intermediate <<= (F_RES - 1); //FRAC_BITS + INT_BITS2 - signum;
+	// Shift the dividend before dividing.
+	// Please not this shift is adjusted according to the optimization above.
+	intermediate <<= FRAC_BITS2; // originally was INT_BITS2 + FRAC_BITS2;
+	// intermediate <<= INT_BITS2 + FRAC_BITS2;
 	intermediate /= divisor.getRaw();
 	result_t tmp = result_t::createRaw(intermediate);
 	return tmp.template convert<INT_BITS, FRAC_BITS>();
